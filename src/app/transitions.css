@@ -1,0 +1,11 @@
+.container-information-package {
+  display: flex;
+  flex-direction: row;
+
+  transition: width 0.5s;
+}
+
+.container-information-package:focus{
+    height: 500px;
+    background-color: white;
+}
