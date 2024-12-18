@@ -16,8 +16,6 @@ const CardStatusItem = ({
   height,
   fill,
 }: CardStatusItemProps) => {
-  console.log(fill);
-
   return (
     <div className="flex flex-col justify-center items-center gap-1">
       {React.cloneElement(Icon as React.ReactElement, {

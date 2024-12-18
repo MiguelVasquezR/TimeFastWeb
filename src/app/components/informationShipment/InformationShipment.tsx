@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import StatusTimeLine from "../statusTimeLine/StatusTimeLine";
 
 import PackageCanceled from "@/app/components/icons/packageCanceled/PackageCanceled";
 import PackageArrested from "@/app/components/icons/packageArrested/PackageArredted";
 import MessageStatusProblem from "../messages/messageStatusProblem/MessageStatusProblem";
+import { Envio } from "@/app/interfaces/envioInterfaces";
+import { Estado } from "@/app/interfaces/estadoInterface";
 
 const InfoItem = ({ title, value }: { title: string; value: string }) => (
   <div className="col-span-1 row-span-1">
@@ -13,51 +15,98 @@ const InfoItem = ({ title, value }: { title: string; value: string }) => (
   </div>
 );
 
-interface InformationShipmentProps {
-  nombreCliente: string;
-  numeroGuia: string;
-  servicio: string;
-  fechaEstimadaEntrega: string;
-  origen: string;
-  destino: string;
-  numeroPaquetes: number;
-  estado: string;
-}
-
 const InformationShipment = ({
-  nombreCliente,
-  numeroGuia,
-  servicio,
-  fechaEstimadaEntrega,
+  cliente,
+  numGuia,
   origen,
   destino,
-  numeroPaquetes,
-  estado,
-}: InformationShipmentProps) => {
+  paquetes,
+  fechaEntrega,
+  estadoEnvios,
+}: Envio) => {
   const [isMoreInformation, setIsMoreInformation] = useState(false);
+  const [estado, setEstado] = useState<Estado>();
+
+  const formatearFecha = (fecha: string): string => {
+    const fechaObj = new Date(fecha);
+    const dia = String(fechaObj.getDate() + 1).padStart(2, "0");
+    const mes = String(fechaObj.getMonth() + 1).padStart(2, "0");
+    const año = fechaObj.getFullYear();
+    return `${dia}-${mes}-${año}`;
+  };
+
+  const fechaMasReciente = estadoEnvios.reduce(
+    (fechaActualMasReciente: any, estado: any) => {
+      const fechaEstado = new Date(estado.fecha);
+      if (!fechaActualMasReciente || fechaEstado > fechaActualMasReciente) {
+        return fechaEstado;
+      }
+      return estado;
+    },
+    null
+  );
+
+  useEffect(() => {
+    const fecha = fechaMasReciente;
+    setEstado(fecha);
+  }, []);
 
   return (
-    <div className="px-5">
+    <div className="px-5 w-screen h-screen bg-blue">
       <div>
         <h2 className="font-roboto text-[24px] font-bold text-white mb-5">
-          Hola, {nombreCliente}
+          Hola,{" "}
+          {cliente?.persona?.nombre +
+            " " +
+            cliente?.persona?.apellidoPaterno +
+            " " +
+            cliente?.persona?.apellidoMaterno}
         </h2>
       </div>
 
       <div className="grid grid-cols-3 gap-5">
         <div className="col-span-2">
           <div className="grid grid-cols-3 grid-rows-2 gap-5">
-            <InfoItem title="Número de guía" value={numeroGuia} />
-            <InfoItem title="Servicio" value={servicio} />
+            <InfoItem title="Número de guía" value={numGuia} />
             <InfoItem
               title="Fecha estimada de entrega"
-              value={fechaEstimadaEntrega}
+              value={formatearFecha(fechaEntrega)}
             />
-            <InfoItem title="Origen" value={origen} />
-            <InfoItem title="Destino" value={destino} />
             <InfoItem
               title="Número de paquete(s)"
-              value={`${numeroPaquetes} paquete(s)`}
+              value={`${paquetes.length} paquete(s)`}
+            />
+            <InfoItem
+              title="Origen"
+              value={
+                origen.calle +
+                " #" +
+                origen.numero +
+                ", Col. " +
+                origen.colonia +
+                ", " +
+                origen.codigoPostal +
+                ". " +
+                origen.ciudad +
+                ", " +
+                origen.estado
+              }
+            />
+            <InfoItem
+              title="Destino"
+              value={
+                destino.calle +
+                " #" +
+                destino.numero +
+                ", Col. " +
+                destino.colonia +
+                ", " +
+                destino.codigoPostal +
+                ". " +
+                destino.ciudad +
+                ", " +
+                destino.estado
+              }
             />
           </div>
 
@@ -90,38 +139,45 @@ const InformationShipment = ({
                       </tr>
                     </thead>
                     <tbody className="w-full text-center">
-                      <tr>
-                        <td className="border px-4 py-2">1</td>
-                        <td className="border px-4 py-2">Paquete 1</td>
-                        <td className="border px-4 py-2">10 kg</td>
-                        <td className="border px-4 py-2">20x20x20</td>
-                      </tr>
-                      <tr>
-                        <td className="border px-4 py-2">2</td>
-                        <td className="border px-4 py-2">Paquete 2</td>
-                        <td className="border px-4 py-2">20 kg</td>
-                        <td className="border px-4 py-2">30x30x30</td>
-                      </tr>
+                      {paquetes.map((paquete: any, index: number) => (
+                        <tr key={index}>
+                          <td className="border px-4 py-2">{index + 1}</td>
+                          <td className="border px-4 py-2">
+                            {paquete.descripcion}
+                          </td>
+                          <td className="border px-4 py-2">
+                            {paquete.peso} kg
+                          </td>
+                          <td className="border px-4 py-2">
+                            {paquete.dimensiones}
+                          </td>
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
                 </div>
               )}
             </div>
           </div>
-
-          <div className="w-full bg-white h-[400px] rounded-md">Mapa</div>
         </div>
 
         <div className="col-span-1">
-          {estado === "Cancelado" || estado === "Detenido" ? (
+          <h2 className="text-center text-[22px] font-bold text-white">
+            Descripción del Estado:
+          </h2>
+          <p className="text-center text-[20px] text-white">
+            {estado?.descripcion}
+          </p>
+
+          {estado?.estado === "Cancelado" || estado?.estado === "Detenido" ? (
             <MessageStatusProblem
               description={
-                estado === "Cancelado"
+                estado?.estado === "Cancelado"
                   ? "El envío ha sido cancelado"
                   : "El envío ha sido detenido"
               }
               icon={
-                estado === "Cancelado" ? (
+                estado?.estado === "Cancelado" ? (
                   <PackageCanceled fillBox="#fff" height={32} width={32} />
                 ) : (
                   <PackageArrested fill="#fff" height={32} width={32} />
@@ -129,7 +185,7 @@ const InformationShipment = ({
               }
             />
           ) : (
-            <StatusTimeLine estado={estado} />
+            <StatusTimeLine estado={estado?.estado || ""} />
           )}
         </div>
       </div>

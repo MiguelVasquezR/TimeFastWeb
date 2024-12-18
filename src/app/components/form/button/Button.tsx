@@ -4,7 +4,7 @@ interface ButtonProps {
   isLoading: boolean;
   textButton: string;
   isIcon?: boolean;
-  Icon?: React.ElementType;
+  Icon?: React.MouseEvent<HTMLButtonElement>;
   onClick?: () => void;
 }
 
