@@ -1,7 +1,15 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/envio",
+        permanent: true, // Cambia a false si deseas un redireccionamiento temporal
+      },
+    ];
+  },
 };
 
 export default nextConfig;

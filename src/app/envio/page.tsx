@@ -1,12 +1,12 @@
 "use client";
 
-import InformationShipment from "./components/informationShipment/InformationShipment";
+import InformationShipment from "../components/informationShipment/InformationShipment";
 import { useState } from "react";
-import MessageInit from "./components/messages/messageInit/MessageInit";
-import Loading from "./components/loading/Loading";
-import SearchBar from "./components/searchBar/SearchBar";
-import MessageError from "./components/messages/messageError/MessageError";
-import { Envio } from "./interfaces/envioInterfaces";
+import MessageInit from "../components/messages/messageInit/MessageInit";
+import Loading from "../components/loading/Loading";
+import SearchBar from "../components/searchBar/SearchBar";
+import MessageError from "../components/messages/messageError/MessageError";
+import { Envio } from "../interfaces/envioInterfaces";
 
 export default function Home() {
   const [numGuia, setNumGuia] = useState<string>("");
