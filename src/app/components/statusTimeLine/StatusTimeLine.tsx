@@ -16,7 +16,7 @@ const COLOR_INACTIVE = "#fff";
 
 const StatusTimeLine = ({ estado }: StatusTimeLineProps) => {
   const isPending = estado === "Pendiente";
-  const isInTransit = estado === "En tránsito";
+  const isInTransit = estado === "En transito";
   const isDelivered = estado === "Entregado";
 
   return (

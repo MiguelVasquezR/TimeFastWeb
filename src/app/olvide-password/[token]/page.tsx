@@ -1,10 +1,12 @@
 "use client";
 
+import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
+import Logo from '../../utils/logo.png'
 
 const OlvidePassword = () => {
   const { token } = useParams();
@@ -58,9 +60,14 @@ const OlvidePassword = () => {
       if (json.error === false) {
         router.push("/");
         toast.success("Contraseña actualizada correctamente");
+      }else{
+        toast.error("Error al actualizar la contraseña o su enlace ya expiró");
+        setLoading(false);
       }
     } catch (error) {
       console.error("Error al enviar el formulario:", error);
+      toast.error("Error al actualizar la contraseña o su enlace ya expiró");
+      setLoading(false);
     }
   };
 
@@ -69,6 +76,9 @@ const OlvidePassword = () => {
       <div className="flex flex-col gap-5 bg-white rounded-md w-[400px] h-[600px] text-center p-5">
         <p className="text-2xl font-bold text-blue">Recuperar contraseña</p>
         <p className="text-blue text-xl font-bold animate-pulse">TimeFast</p>
+        <div className="flex justify-center items-center">
+          <Image src={Logo} alt="Logo" width={160} height={120}  className="rounded-md"/>
+        </div>
         <form
           className="h-full flex flex-col justify-center items-center gap-5"
           onSubmit={handleSubmit}

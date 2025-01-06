@@ -22,7 +22,7 @@ const TextField = ({
         </span>
       )}
       <input
-        className="w-full outline-none h-full p-1"
+        className="w-full outline-none h-full p-1 text-black"
         type={type}
         onChange={onChange}
         placeholder={placeholder}

@@ -39,7 +39,7 @@ const InformationShipment = ({
     (fechaActualMasReciente: any, estado: any) => {
       const fechaEstado = new Date(estado.fecha);
       if (!fechaActualMasReciente || fechaEstado > fechaActualMasReciente) {
-        return fechaEstado;
+        return estado;
       }
       return estado;
     },
@@ -49,7 +49,7 @@ const InformationShipment = ({
   useEffect(() => {
     const fecha = fechaMasReciente;
     setEstado(fecha);
-  }, []);
+  }, [fechaMasReciente]);
 
   return (
     <div className="px-5 w-screen h-screen bg-blue">
@@ -115,7 +115,7 @@ const InformationShipment = ({
             className="w-[90%] transition-all ease-in-out bg-white rounded-md flex flex-col items-center p-5 cursor-pointer my-10"
           >
             <div className="flex flex-row justify-between items-center w-full">
-              <p className="font-roboto text-[15px] font-bold">
+              <p className="font-roboto text-[15px] font-bold text-black">
                 Información de paquete
               </p>
               <IoIosArrowDown size={32} color="black" />
@@ -130,8 +130,8 @@ const InformationShipment = ({
               {isMoreInformation && (
                 <div className="w-full rounded-lg overflow-hidden shadow-md">
                   <table className="w-full table-auto border-collapse border border-gray-300">
-                    <thead className="w-full text-center bg-gray-100">
-                      <tr>
+                    <thead className="w-full text-center bg-black">
+                      <tr className="text-white">
                         <th className="border px-4 py-2">ID</th>
                         <th className="border px-4 py-2">Descripción</th>
                         <th className="border px-4 py-2">Peso</th>
@@ -141,14 +141,14 @@ const InformationShipment = ({
                     <tbody className="w-full text-center">
                       {paquetes.map((paquete: any, index: number) => (
                         <tr key={index}>
-                          <td className="border px-4 py-2">{index + 1}</td>
-                          <td className="border px-4 py-2">
+                          <td className="border px-4 py-2 text-black">{index + 1}</td>
+                          <td className="border px-4 py-2 text-black">
                             {paquete.descripcion}
                           </td>
-                          <td className="border px-4 py-2">
+                          <td className="border px-4 py-2 text-black">
                             {paquete.peso} kg
                           </td>
-                          <td className="border px-4 py-2">
+                          <td className="border px-4 py-2 text-black">
                             {paquete.dimensiones}
                           </td>
                         </tr>
