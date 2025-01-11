@@ -51,7 +51,7 @@ const OlvidePassword = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:8080/time-fast-api/api/colaborador/actualizas-password",
+        "http://201.153.190.10:8080/time-fast-api/api/colaborador/actualizas-password",
         requestOptions
       );
       const result = await response.text();

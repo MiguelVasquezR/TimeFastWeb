@@ -33,7 +33,7 @@ const SearchBar = ({
     setIsLoading(true);
     axios
       .get(
-        `http://201.153.208.50:8080/time-fast-api/api/envios/consultar/${numGuia}`
+        `http://189.161.108.148:8080/time-fast-api/api/envios/consultar/${numGuia}`
       )
       .then((response) => {
         const jsonWS = JSON.parse(response.data.objeto.value);
